@@ -1,0 +1,83 @@
+---
+title: "hw3"
+author: "Rohan Mishra ! github rohmish"
+date: "2/19/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+data(tips, package = "reshape2")
+```
+
+## Question 1
+```{r}
+partyCount = nrow(tips)
+partyCount
+```
+there were 244 parties served.
+
+## Question 2
+```{r}
+str(tips)
+```
+
+total_bill and tip are Numeric, size is an Integer, and sex, smoker, day, and time are all Factors.
+
+## Question 3
+```{r}
+day = tips$day
+day = day[order(match(day,  c("Thur","Fri","Sat","Sun")))]
+day
+```
+
+## Question 4
+```{r}
+female5 = tips[(tips[,3] == "Female") & (tips[,7] >= 5), ]
+female5
+```
+
+## Question 5
+```{r}
+library(ggplot2)
+ggplot(tips, aes(x=total_bill, y=tip)) + geom_point() + xlab("Bill Amount") + ylab("Ammount of Tip")
+```
+There is a positive correlation between the total bill and tip.
+
+## Question 6
+
+1) 1 outlier is the bill amount of roughly $7 but the tip is at $5.
+
+2) Once the bill gets decently high, the tio value is seen having a less positive correlation.
+
+## Question 7
+```{r}
+tips$rateoftip = tips$tip/tips$total_bill
+mean (tips$rateoftip)
+```
+On average, a waiter is tipped 16% of the total billthe average tip o a bill is about 16%
+## Question 8
+```{r}
+ggplot(tips, aes(x = factor(tips$time, levels = c("Lunch","Dinner")), y = rateoftip)) + geom_boxplot() + xlab("Time") + ylab("Rate of Tip")
+```
+The average rate of tip is close to the same with a couple of outiers in dinner and the upper quartile of lunch being a bit larger.
+
+## Question 9
+```{r}
+sexsmoker = tips
+sexsmoker$new = paste(tips$sex,tips$smoker)
+ggplot(sexsmoker, aes(x = total_bill, y = tip, color = new)) + geom_point() + xlab("Bill Amount") + ylab("Amount of Tip")
+```
+
+Males and Smokers tend to pay the highest tips
+
+## Question 10
+```{r}
+ggplot(tips, aes(x = factor(day, levels = c("Thur","Fri","Sat","Sun")), fill=sex)) + geom_bar() +
+xlab("Day of the Week") + ylab("Customers")
+```
+
+On weekends, you see more males than females. And on weekdays, it varies and you may find more females than men.
